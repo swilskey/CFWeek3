@@ -9,23 +9,15 @@
 import UIKit
 
 class NetworkService {
-  static let sharedService = NetworkService()
-  
-  private init() {}
   
   class func requestGithubAccess() {
-    let authURL = NSURL(string: "https://github.com/login/oauth/authorize?client_id=\(Keys.kClientId.rawValue)&redirect_uri=githubclient://oauth&scope=user,repo")
+    let authURL = NSURL(string: "https://github.com/login/oauth/authorize?client_id=\(kClientId)&redirect_uri=githubclient://oauth&scope=user,repo")
     UIApplication.sharedApplication().openURL(authURL!)
-  }
-  
-  class func requestAccessToken() {
-    
   }
   
   class func exchangeCodeInURL(codeURL : NSURL) {
     if let code = codeURL.query {
-      let request = NSMutableURLRequest(URL: NSURL(string: "https://github.com/login/oauth/access_token?\(code)&client_id=\(Keys.kClientId.rawValue)&client_secret=\(Keys.kClientSecret.rawValue)")!)
-      println(request.URL)
+      let request = NSMutableURLRequest(URL: NSURL(string: "https://github.com/login/oauth/access_token?\(code)&client_id=\(kClientId)&client_secret=\(kClientSecret)")!)
       request.HTTPMethod = "POST"
       request.setValue("application/json", forHTTPHeaderField: "Accept")
       NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
@@ -35,6 +27,10 @@ class NetworkService {
           if let rootObject = NSJSONSerialization.JSONObjectWithData(data, options: nil, error: &jsonError) as? [String : AnyObject],
             token = rootObject["access_token"] as? String {
               KeychainService.saveToken(token)
+              
+              NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
+                NSNotificationCenter.defaultCenter().postNotificationName(kTokenNotification, object: nil)
+              })
           }
         }
       }).resume()

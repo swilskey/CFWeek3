@@ -13,16 +13,24 @@ class UserSearchViewController: UIViewController {
   @IBOutlet weak var userSearchBar: UISearchBar!
   @IBOutlet weak var userCollectionView: UICollectionView!
   
+  let transition = UserTransitionController()
   let imageQueue = NSOperationQueue()
-  
-  var imageCache = [String : UIImage]()
   var users = [User]()
   
   override func viewDidLoad() {
     super.viewDidLoad()
     userCollectionView.dataSource = self
     userSearchBar.delegate = self
-    
+  }
+  
+  override func viewWillAppear(animated: Bool) {
+    super.viewWillAppear(animated)
+    navigationController?.delegate = self
+  }
+  
+  override func viewWillDisappear(animated: Bool) {
+    super.viewWillDisappear(animated)
+    navigationController?.delegate = nil
   }
   
   override func didReceiveMemoryWarning() {
@@ -30,7 +38,14 @@ class UserSearchViewController: UIViewController {
     // Dispose of any resources that can be recreated.
   }
   
+  override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
+    let destination = segue.destinationViewController as! UserViewController
+    let indexPath = userCollectionView.indexPathsForSelectedItems().first as! NSIndexPath
+    destination.user = users[indexPath.item]
+  }
 }
+
+// MARK: - UICollectionViewDataSource
 
 extension UserSearchViewController: UICollectionViewDataSource {
   func collectionView(collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -39,7 +54,7 @@ extension UserSearchViewController: UICollectionViewDataSource {
   
   func collectionView(collectionView: UICollectionView, cellForItemAtIndexPath indexPath: NSIndexPath) -> UICollectionViewCell {
     let cell = collectionView.dequeueReusableCellWithReuseIdentifier("UserCell", forIndexPath: indexPath) as! UserCollectionCell
-    
+    cell.alpha = 0
     let user = users[indexPath.item]
     cell.usernameLabel.text = user.login
     
@@ -48,9 +63,15 @@ extension UserSearchViewController: UICollectionViewDataSource {
     
     cell.userImageView.image = nil
     let imageURL = user.avatarURL
-    if let image = imageCache[imageURL] {
+    if let image = ImageCacheService.sharedCache.getImage(imageURL) {
       if cell.tag == tag {
+        cell.userImageView.layer.cornerRadius = 60
+        cell.userImageView.layer.masksToBounds = true
         cell.userImageView.image = image
+        
+        UIView.animateWithDuration(0.3, animations: { () -> Void in
+          cell.alpha = 1
+        })
       }
     }
     imageQueue.addOperationWithBlock { () -> Void in
@@ -58,17 +79,23 @@ extension UserSearchViewController: UICollectionViewDataSource {
       NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
         cell.userImageView.layer.cornerRadius = 60
         cell.userImageView.layer.masksToBounds = true
-        self.imageCache[imageURL] = userImage
+        ImageCacheService.sharedCache.addImage(imageURL, image: userImage!)
         if cell.tag == tag {
+          
           cell.userImageView.image = userImage;
+          cell.usernameLabel.text = user.login
+          UIView.animateWithDuration(0.3, animations: { () -> Void in
+            cell.alpha = 1
+          })
         }
-        cell.usernameLabel.text = user.login
       })
     }
     
     return cell
   }
 }
+
+// MARK: - UISearchBarDelagete
 
 extension UserSearchViewController: UISearchBarDelegate {
   func searchBarSearchButtonClicked(searchBar: UISearchBar) {
@@ -85,5 +112,14 @@ extension UserSearchViewController: UISearchBarDelegate {
         })
       }
     })
+  }
+}
+
+// MARK: - UIViewControllerTransitioningDelagete
+
+extension UserSearchViewController: UINavigationControllerDelegate {
+  func navigationController(navigationController: UINavigationController, animationControllerForOperation operation: UINavigationControllerOperation, fromViewController fromVC: UIViewController, toViewController toVC: UIViewController) -> UIViewControllerAnimatedTransitioning? {
+    
+    return toVC is UserViewController ? UserTransitionController() : nil
   }
 }

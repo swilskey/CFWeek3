@@ -9,36 +9,36 @@
 import UIKit
 
 class LoginViewController: UIViewController {
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    
+    //TODO: Add Observer for token Notification
+    NSNotificationCenter.defaultCenter().addObserver(self, selector: "newToken", name: kTokenNotification, object: nil)
+  }
   
   override func viewDidAppear(animated: Bool) {
     if let token = KeychainService.loadToken() {
       
     }
   }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
-    
+  
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+    // Dispose of any resources that can be recreated.
+  }
+  
   @IBAction func loginButtonAction(sender: UIButton) {
     NetworkService.requestGithubAccess()
   }
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+  
+  func newToken() {
+    performSegueWithIdentifier("PresentMenu", sender: nil)
+  }
+  
+  //TODO: Remove Observer in deinit
+  deinit {
+    NSNotificationCenter.defaultCenter().removeObserver(self, name: kTokenNotification, object: nil)
+  }
+  
 }
