@@ -40,6 +40,7 @@ extension UserTransitionController: UIViewControllerAnimatedTransitioning {
 
         //Switches frame from cell to container
         snapShot.frame = container.convertRect(userCell.userImageView.frame, fromCoordinateSpace: userCell.userImageView.superview!)
+        toVC.userCellIndex = indexPath
         
         container.addSubview(snapShot)
         
@@ -55,9 +56,9 @@ extension UserTransitionController: UIViewControllerAnimatedTransitioning {
         }, completion: { (finished) -> Void in
           toVC.userImageView.hidden = false
           toVC.userImageView.image = userCell.userImageView.image
+          toVC.userImageView.layer.cornerRadius = 100
           snapShot.removeFromSuperview()
           if finished {
-            userCell.hidden = false
             transitionContext.completeTransition(finished)
           } else {
             transitionContext.completeTransition(finished)

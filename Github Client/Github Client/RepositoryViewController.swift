@@ -7,30 +7,26 @@
 //
 
 import UIKit
+import WebKit
 
 class RepositoryViewController: UIViewController {
+  @IBOutlet weak var webViewContainer: UIView!
   var repository: Repo?
-
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        // Do any additional setup after loading the view.
-    }
-
-    override func didReceiveMemoryWarning() {
-        super.didReceiveMemoryWarning()
-        // Dispose of any resources that can be recreated.
-    }
+  
+  override func viewDidLoad() {
+    super.viewDidLoad()
+    let webView = WKWebView(frame: view.frame)
+    webViewContainer.addSubview(webView)
+    let url = NSURL(string: repository!.url)
+    let request = NSURLRequest(URL: url!)
     
-
-    /*
-    // MARK: - Navigation
-
-    // In a storyboard-based application, you will often want to do a little preparation before navigation
-    override func prepareForSegue(segue: UIStoryboardSegue, sender: AnyObject?) {
-        // Get the new view controller using segue.destinationViewController.
-        // Pass the selected object to the new view controller.
-    }
-    */
-
+    webView.loadRequest(request)
+    // Do any additional setup after loading the view.
+  }
+  
+  override func didReceiveMemoryWarning() {
+    super.didReceiveMemoryWarning()
+    // Dispose of any resources that can be recreated.
+  }
+  
 }

@@ -42,6 +42,7 @@ class UserSearchViewController: UIViewController {
     let destination = segue.destinationViewController as! UserViewController
     let indexPath = userCollectionView.indexPathsForSelectedItems().first as! NSIndexPath
     destination.user = users[indexPath.item]
+    destination.userCellIndex = indexPath
   }
 }
 
@@ -105,13 +106,22 @@ extension UserSearchViewController: UISearchBarDelegate {
         println("Error: " + error)
       }
       if let data = data {
-        self.users = UserJSONParser.parseUserJSON(data)!
+        self.users = UserJSONParser.parseUserSearchJSON(data)!
         NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
           self.userSearchBar.resignFirstResponder()
           self.userCollectionView.reloadData()
         })
       }
     })
+  }
+  
+  func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    if !text.validateForURL() {
+      searchBar.barTintColor = UIColor.redColor()
+      return text.validateForURL()
+    }
+    searchBar.barTintColor = nil
+    return text.validateForURL()
   }
 }
 

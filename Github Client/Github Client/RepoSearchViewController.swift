@@ -61,6 +61,15 @@ extension RepoSearchViewController: UISearchBarDelegate {
       }
     })
   }
+  
+  func searchBar(searchBar: UISearchBar, shouldChangeTextInRange range: NSRange, replacementText text: String) -> Bool {
+    if !text.validateForURL() {
+      searchBar.barTintColor = UIColor.redColor()
+      return text.validateForURL()
+    }
+    searchBar.barTintColor = nil
+    return text.validateForURL()
+  }
 }
 
 extension RepoSearchViewController: UITableViewDataSource {
