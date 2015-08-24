@@ -30,8 +30,8 @@ class UserViewController: UIViewController {
           self.userProfile = UserJSONParser.parseUserProfileJSON(data)
           NSOperationQueue.mainQueue().addOperationWithBlock({ () -> Void in
             self.usernameLabel.text = self.userProfile?.name
-            self.followerCountLabel.text = String(stringInterpolationSegment: self.userProfile?.followers)
-            self.repositoryCountLabel.text = String(stringInterpolationSegment: self.userProfile?.publicRepos)
+            self.repositoryCountLabel.text = "Repositories: \(self.userProfile?.publicRepos)"
+            self.followerCountLabel.text = "Followers: \(self.userProfile?.followers)"
           })
         }
       })

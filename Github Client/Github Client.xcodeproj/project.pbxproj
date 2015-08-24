@@ -30,6 +30,8 @@
 		229DEF281B82425D009BC59F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 229DEF271B82425D009BC59F /* Images.xcassets */; };
 		229DEF2B1B82425D009BC59F /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 229DEF291B82425D009BC59F /* LaunchScreen.xib */; };
 		229DEF371B82425D009BC59F /* Github_ClientTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 229DEF361B82425D009BC59F /* Github_ClientTests.swift */; };
+		22B117591B89476900209EF7 /* UserProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B117581B89476900209EF7 /* UserProfileViewController.swift */; };
+		22B1175B1B894A8900209EF7 /* UserRepositoryViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22B1175A1B894A8900209EF7 /* UserRepositoryViewController.swift */; };
 		22BB3AAE1B841F91003724EA /* KeyChainService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BB3AAD1B841F91003724EA /* KeyChainService.swift */; };
 		22BB3AB11B8420B5003724EA /* LoginViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22BB3AB01B8420B5003724EA /* LoginViewController.swift */; };
 		22CC99AF1B83B2FC00306645 /* UserSearchViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 22CC99AE1B83B2FC00306645 /* UserSearchViewController.swift */; };
@@ -76,6 +78,8 @@
 		229DEF301B82425D009BC59F /* Github ClientTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "Github ClientTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		229DEF351B82425D009BC59F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		229DEF361B82425D009BC59F /* Github_ClientTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Github_ClientTests.swift; sourceTree = "<group>"; };
+		22B117581B89476900209EF7 /* UserProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserProfileViewController.swift; sourceTree = "<group>"; };
+		22B1175A1B894A8900209EF7 /* UserRepositoryViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserRepositoryViewController.swift; sourceTree = "<group>"; };
 		22BB3AAD1B841F91003724EA /* KeyChainService.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = KeyChainService.swift; sourceTree = "<group>"; };
 		22BB3AB01B8420B5003724EA /* LoginViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LoginViewController.swift; sourceTree = "<group>"; };
 		22CC99AE1B83B2FC00306645 /* UserSearchViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserSearchViewController.swift; sourceTree = "<group>"; };
@@ -117,6 +121,8 @@
 		223C92BD1B879F35008E9AC6 /* User */ = {
 			isa = PBXGroup;
 			children = (
+				22B117581B89476900209EF7 /* UserProfileViewController.swift */,
+				22B1175A1B894A8900209EF7 /* UserRepositoryViewController.swift */,
 			);
 			name = User;
 			sourceTree = "<group>";
@@ -345,6 +351,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				22B1175B1B894A8900209EF7 /* UserRepositoryViewController.swift in Sources */,
 				220360D51B86883D006E58B2 /* Extensions.swift in Sources */,
 				22CC99B11B83B45500306645 /* NetworkService.swift in Sources */,
 				223B43AA1B84E74300917B83 /* RepoCell.swift in Sources */,
@@ -366,6 +373,7 @@
 				220360D71B86AF9E006E58B2 /* UserReverseTransitionController.swift in Sources */,
 				227D059D1B855264009312E5 /* Constants.swift in Sources */,
 				22BB3AB11B8420B5003724EA /* LoginViewController.swift in Sources */,
+				22B117591B89476900209EF7 /* UserProfileViewController.swift in Sources */,
 				143BF05E3EFE8BFCB67D45F1 /* GithubService.swift in Sources */,
 				223C92BF1B87A187008E9AC6 /* UserProfile.swift in Sources */,
 				223B43B01B84EE7700917B83 /* RepositoryViewController.swift in Sources */,

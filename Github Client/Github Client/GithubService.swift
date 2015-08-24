@@ -80,8 +80,29 @@ class GithubService {
   
   class func userWithLogin(userURL: String, completionHandler: (error: String?, data: NSData?) -> (Void)) {
     let token = getToken()
-    
     let request = NSMutableURLRequest(URL: NSURL(string: userURL)!)
+    request.setValue(token, forHTTPHeaderField: "Authorization")
+    
+    NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
+      if let error = error {
+        println(error)
+      } else if let httpResponse = response as? NSHTTPURLResponse {
+        switch httpResponse.statusCode {
+        case 200...299:
+          completionHandler(error: nil, data: data)
+        case 300...399:
+          completionHandler(error: "300 Error", data: nil)
+        default:
+          completionHandler(error: "Unknown Error", data: nil)
+        }
+      }
+    }).resume()
+  }
+  
+  class func userWithLogin(completionHandler: (error: String?, data: NSData?) -> (Void)) {
+    let token = getToken()
+    let url = "https://api.github.com/user"
+    let request = NSMutableURLRequest(URL: NSURL(string: url)!)
     request.setValue(token, forHTTPHeaderField: "Authorization")
     
     NSURLSession.sharedSession().dataTaskWithRequest(request, completionHandler: { (data, response, error) -> Void in
